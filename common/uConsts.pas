@@ -1,0 +1,53 @@
+unit uConsts;
+
+interface
+
+const
+  DEBUG_WIDTH = 1300;//432;
+  DEBUG_HEIGHT = 840;
+
+  SEAT_START_NO = 1;
+
+  FLOOR_ZONE_CODE_2 = 24;
+  FLOOR_ZONE_CODE_3 = 48;
+  FLOOR_ZONE_CODE_4 = 72;
+
+  ZOOM_CC_SOH = #01;
+  ZOOM_CC_STX = #02;
+  ZOOM_CC_ETX = #03;
+  ZOOM_CC_EOT = #04;
+  ZOOM_CC_ENQ = #05;
+
+  COM_CTL = 1;
+  COM_MON = 2;
+
+  COM_CTL_MAX = 255;
+
+  ZOOM_MON_STX = #01; //$01 ''
+  ZOOM_ANS_STX = #02; //$02
+  ZOOM_CTL_STX = #05; //$05 ''
+  ZOOM_ANS_ETX = #03; //$03
+  ZOOM_REQ_ETX = #04; //$04
+  ZOOM_RECV_LENGTH = 16;
+
+  JEHU_STX = #02;
+  JEHU_ETX = #03;
+  JEHU_MON_ERR = #04;
+  JEHU_ENQ = #05;
+  JEHU_CTL_FIN = #06;
+  JEHU_NAK = #15;
+  JEHU_SYN = #16;
+  JEHU_RECV_LENGTH_435 = 15;
+  JEHU_RECV_LENGTH_600 = 17;
+
+  JMS_STX = $4E;
+  JMS_ETX = $45;
+  JMS_RECV_LENGTH = 5;
+
+  HEAT_MAX = 81;
+
+  NANO_ETX = $0D;
+
+implementation
+
+end.

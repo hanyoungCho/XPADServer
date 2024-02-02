@@ -1,0 +1,37 @@
+object ProductItemStyle: TProductItemStyle
+  Size.Width = 120.000000000000000000
+  Size.Height = 26.000000000000000000
+  Size.PlatformDefault = False
+  object Layout: TLayout
+    Align = Center
+    Size.Width = 110.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object BodyImage: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Align = Client
+      Size.Width = 110.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object Text1: TText
+        Align = Left
+        Size.Width = 41.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        Text = '1'
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object Edit1: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 0
+        Position.X = 40.000000000000000000
+        Size.Width = 73.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+  end
+end
