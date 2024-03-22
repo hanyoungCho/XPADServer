@@ -535,6 +535,9 @@ begin
 
     for Index := 0 to FItemList.Count - 1 do
     begin
+      if FItemList[Index].TeeboxInfo.UseYn <> 'Y' then
+        Continue;
+
       nTeeboxNo := FItemList[Index].TeeboxInfo.TeeboxNo;
       rTeeboxInfo := Global.Teebox.GetTeeboxInfo(nTeeboxNo);
 

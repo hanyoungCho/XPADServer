@@ -345,7 +345,12 @@ begin
   if sSeatTime = '000' then
     sSendData := ADeviceId + sSeatTime + '0000' + '9'
   else
-    sSendData := ADeviceId + sSeatTime + '9999' + '0';
+  begin
+    if Global.ADConfig.StoreCode = 'D2001' then //동도센트리움 - 2024-02-21
+      sSendData := ADeviceId + sSeatTime + '0999' + '0'
+    else
+      sSendData := ADeviceId + sSeatTime + '9999' + '0';
+  end;
 
   sBcc := GetBccJehu(sSendData);
 

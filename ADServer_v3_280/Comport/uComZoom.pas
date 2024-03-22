@@ -125,9 +125,10 @@ begin
   //sLogMsg := StrZeroAdd(FTeeboxInfo.TeeboxNm, 2) + ' : ' + FSendData + ' / ' + FRecvData + ' / ' + StringToHex(FRecvData);
   //Global.DebugLogFromViewMulti(FIndex, sLogMsg);
   //Global.Log.LogReadMulti(FIndex, sLogMsg);
-
+  {
   if Length(FRecvData) < 16 then
     Exit;
+  }
 
   if Pos(ZOOM_STX, FRecvData) = 0 then
     Exit;
@@ -140,10 +141,13 @@ begin
 
   FRecvData := Copy(FRecvData, nStx, nEtx);
 
+  if (global.ADConfig.StoreCode = 'D4001') then // D4001 수원CC
+    FRecvData := Copy(FRecvData, 1, 15);
+
   //2020-06-17 양평 19자리 .0613@011799838A5C.$  , .0623@00529936D76C.$
   if (Length(FRecvData) <> 15) and (Length(FRecvData) <> 19) then
   begin
-    Global.Log.LogReadMulti(FIndex, 'FRecvData fail : ' + FRecvData);
+    Global.Log.LogReadMulti(FIndex, 'FRecvData Length fail : ' + IntToStr(Length(FRecvData)) + ' / ' + FRecvData);
 
     sLogMsg := StrZeroAdd(FTeeboxInfo.TeeboxNm, 2) + ' : ' + FSendData + ' / ' + FRecvData;
     Global.DebugLogFromViewMulti(FIndex, sLogMsg);
@@ -345,7 +349,7 @@ begin
       FTeeboxNoLast := FTeeboxNoStart;
 
     rTeeboxInfo := Global.Teebox.GetTeeboxInfo(FTeeboxNoLast);
-    if rTeeboxInfo.UseYn = 'Y' then
+    if (rTeeboxInfo.TeeboxNo > 0) and (rTeeboxInfo.UseYn = 'Y') then
       Break;
   end;
 
@@ -468,6 +472,7 @@ begin
           //제어후 리턴값이 없음
           sBcc := GetBCCZoomCC(FChannel);
           FSendData := ZOOM_MON_STX + FChannel + ZOOM_REQ_ETX + sBcc;
+          //FRecvData := '';
           FComPort.Write(FSendData[1], Length(FSendData));
           Global.Log.LogWriteMulti(FIndex, 'SendData : FCurCmdDataIdx ' + IntToStr(FCurCmdDataIdx) + ' / ' + FSendData);
         end;
@@ -487,6 +492,7 @@ begin
         //	0	1	1		6
         //01	30	31	31	04	36
         FLastExeCommand := COM_MON;
+        //Global.Log.LogWriteMulti(FIndex, 'FTeeboxNoLast: ' + IntToStr(FTeeboxNoLast));
         FTeeboxInfo := Global.Teebox.GetTeeboxInfo(FTeeboxNoLast);
         //FChannel := FTeeboxInfo.DeviceId;
         if (FTeeboxInfo.TeeboxZoneCode = 'L') or (FTeeboxInfo.TeeboxZoneCode = 'C') then
@@ -497,6 +503,7 @@ begin
         sBcc := GetBCCZoomCC(FChannel);
         FSendData := ZOOM_MON_STX + FChannel + ZOOM_REQ_ETX + sBcc;
         FComPort.Write(FSendData[1], Length(FSendData));
+        //Global.Log.LogWriteMulti(FIndex, 'SendData : bControlMode ' + IntToStr(FTeeboxNoLast) + ' / ' + FSendData);
 
         FWriteTm := now + (((1/24)/60)/60) * 1;
       end;

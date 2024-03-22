@@ -526,9 +526,11 @@ begin
   Teebox := TTeebox.Create; //타석기정보
   ReserveList := TTeeboxReserveList.Create; //타석기 예약목록
   TeeboxThread := TTeeboxThread.Create; //타석기 예약정보관리
-
+  //global.Log.LogWrite('111');
   Teebox.StartUp;
+  //global.Log.LogWrite('222');
   TeeboxThread.Resume;
+  //global.Log.LogWrite('333');
 
   if (FADConfig.ProtocolType = 'JEHU435') or (FADConfig.ProtocolType = 'AD_JEU435') then
   begin
@@ -1143,7 +1145,7 @@ begin
 
   end;
 
-  if (Global.ADConfig.StoreCode = 'A8003') or (Global.ADConfig.StoreCode = 'D4001') then //쇼골프(가양점)
+  if (Global.ADConfig.StoreCode = 'A8003') or (Global.ADConfig.StoreCode = 'D4001') then //쇼골프(가양점) , 수원CC
   begin
     //heat
     if FADConfig.HeatPort <> 0 then
@@ -1205,7 +1207,7 @@ begin
         ComHeat_A8003.SetHeatuse(rTeeboxInfo.TeeboxNm, ATeeboxUse, '1', FormatDateTime('YYYY-MM-DD hh:nn:ss', Now), True);
       end;
 
-      if ComHeat_D4001 <> nil then
+      if ComHeat_D4001 <> nil then // 수원CC
       begin
         SetTeeboxHeatConfig(rTeeboxInfo.TeeboxNm, ADConfig.HeatTime, ATeeboxUse, '1', FormatDateTime('YYYY-MM-DD hh:nn:ss', Now));
         if (rTeeboxInfo.TeeboxZoneCode = 'L') or (rTeeboxInfo.TeeboxZoneCode = 'C') then
@@ -1244,7 +1246,7 @@ begin
         ComHeat_A8003.SetHeatuse(rTeeboxInfo.TeeboxNm, ATeeboxUse, '0', '', True);
       end;
 
-      if ComHeat_D4001 <> nil then
+      if ComHeat_D4001 <> nil then // 수원CC
       begin
         SetTeeboxHeatConfig(rTeeboxInfo.TeeboxNm, '', ATeeboxUse, '0', '');
         if (rTeeboxInfo.TeeboxZoneCode = 'L') or (rTeeboxInfo.TeeboxZoneCode = 'C') then

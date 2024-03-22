@@ -151,14 +151,14 @@ end;
 
 procedure TTeebox.StartUp;
 begin
-
+  //global.Log.LogWrite('StartUp 111');
   if Global.ADConfig.Emergency = False then
     GetTeeboxListToApi
   else
     GetTeeboxListToDB;
-
+//global.Log.LogWrite('StartUp 222');
   Global.ReserveList.StartUp;
-
+ //global.Log.LogWrite('StartUp 333');
   SetTeeboxStartUseStatus;
 
   FSendApiErrorList := TStringList.Create;
@@ -204,7 +204,7 @@ begin
     jObjArr := jObj.GetValue('result_data') as TJsonArray;
 
     nTeeboxCnt := jObjArr.Size;
-    SetLength(FTeeboxInfoList, nTeeboxCnt + 1);
+    //SetLength(FTeeboxInfoList, nTeeboxCnt + 1);
 
     for nIndex := 0 to nTeeboxCnt - 1 do
     begin
@@ -212,6 +212,8 @@ begin
       nTeeboxNo := StrToInt(jObjSub.GetValue('teebox_no').Value);
       if FTeeboxLastNo < nTeeboxNo then
         FTeeboxLastNo := nTeeboxNo;
+
+      SetLength(FTeeboxInfoList, FTeeboxLastNo + 1);
 
       FTeeboxInfoList[nTeeboxNo].TeeboxNo := StrToInt(jObjSub.GetValue('teebox_no').Value);
       FTeeboxInfoList[nTeeboxNo].TeeboxNm := jObjSub.GetValue('teebox_nm').Value;
@@ -413,7 +415,8 @@ begin
   begin
     for I := nDBMax + 1 to FTeeboxLastNo do
     begin
-      Global.XGolfDM.SeatInsert(Global.ADConfig.StoreCode, FTeeboxInfoList[I]);
+      if FTeeboxInfoList[I].TeeboxNo > 0 then
+        Global.XGolfDM.SeatInsert(Global.ADConfig.StoreCode, FTeeboxInfoList[I]);
     end;
   end;
 
@@ -1217,7 +1220,7 @@ begin
   begin
 
     //송도: 'A5001' jeu60A, 1 port 사용
-    if sFloorCd <> '0' then // 0: 단일포트
+    if sFloorCd <> '0' then // 0: 단일포트 또는 장치ID 중복이 없을 경우
     begin
       if FTeeboxInfoList[i].FloorZoneCode <> sFloorCd then
         Continue;
@@ -1706,6 +1709,8 @@ begin
 
     for nTeeboxNo := 1 to TeeboxLastNo do
     begin
+      if FTeeboxInfoList[nTeeboxNo].UseYn <> 'Y' then
+        Continue;
 
       //2020-12-17 반자동
       if FTeeboxInfoList[nTeeboxNo].ControlYn <> 'N' then
@@ -2443,6 +2448,9 @@ begin
   for nTeeboxNo := 1 to TeeboxLastNo do
   begin
 
+    if FTeeboxInfoList[nTeeboxNo].UseYn <> 'Y' then
+      Continue;
+
     if (global.Store.UseRewardYn = 'Y') or // 가맹점정보-이용시간 보상 '예'인경우
        ((Global.Store.UseRewardYn = 'N') and (Global.Store.UseRewardException = 'Y')) then // 가맹점정보-이용시간 보상 '아니요' 이고 정해진 볼회수 시간이 아닌경우
     begin
@@ -2844,6 +2852,8 @@ begin
 
     for nTeeboxNo := 1 to TeeboxLastNo do
     begin
+      if FTeeboxInfoList[nTeeboxNo].UseYn <> 'Y' then
+        Continue;
 
       if (FTeeboxInfoList[nTeeboxNo].RemainMinute > 0)  then
         Continue;
